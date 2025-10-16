@@ -1,3 +1,49 @@
-export default function Home() {
-  return <>knit-it</>;
+import { useState, useRef } from 'react';
+
+// state is the typed pattern
+export default function Renderer() {
+  // UI state variables
+  const [pattern, setPattern] = useState('');
+
+  function handleNewPatternText(text) {
+    console.log(text)
+  }
+
+  return (
+    <>
+      <PatternEditor handleSubmit={handleNewPatternText} />
+      <Rendering />
+    </>
+  );
+}
+
+// a textbox that accepts the typed out pattern
+// contains a button that triggers the pattern to be sent back
+// up to the Renderer where it becomes changed into the state.
+function PatternEditor({ handleSubmit }) {
+  const patternTextEditor = useRef(null);
+
+  function onSubmit() {
+    const intermText = patternTextEditor.current.value;
+    handleSubmit(intermText);
+  }
+
+  return (
+    <div id="patternEditor">
+      <textarea
+        id="editorTextbox"
+        rows="20"
+        cols="20"
+        placeholder="type your pattern here."
+        ref={patternTextEditor}
+      ></textarea>
+      <button id="patternSubmit" onClick={onSubmit}>Submit Pattern</button>
+    </div>
+  );
+}
+
+// a box which takes the pattern object from state (parsed and cleaned pattern)
+// and turns it into a series of images.
+function Rendering() {
+  return <div>Rendering</div>
 }
