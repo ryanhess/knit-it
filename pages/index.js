@@ -1,9 +1,38 @@
 import { useState, useRef } from 'react';
 
+const types = Object.freeze({
+  knit: 'k',
+  purl: 'p',
+  none: 'no stitch'
+})
+
+class Stitch {
+  constructor(
+    type = types.none,
+    next = null,
+    prev = null,
+    above = null,
+    below = null
+  ) {
+    this.type = type;
+    this.next = next;
+    this.prev = prev;
+    this.above = above;
+    this.below = below;
+  }
+}
+
+class KnitPattern {
+  constructor(head = null) {
+    this.head = head;
+  }
+}
+
 // state is the typed pattern
-export default function Renderer() {
-  // UI state variables
-  const [pattern, setPattern] = useState('');
+export default function RendererContainer() {
+  // UI state variable
+  // the pattern is an object of Pattern class
+  const [pattern, setPattern] = useState([]);
 
   function handleNewPatternText(text) {
     console.log(text)
@@ -12,7 +41,7 @@ export default function Renderer() {
   return (
     <>
       <PatternEditor handleSubmit={handleNewPatternText} />
-      <Rendering />
+      <Rendering pattern={pattern} />
     </>
   );
 }
