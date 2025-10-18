@@ -1,41 +1,18 @@
 import { useState, useRef } from 'react';
-
-const types = Object.freeze({
-  knit: 'k',
-  purl: 'p',
-  none: 'no stitch'
-})
-
-class Stitch {
-  constructor(
-    type = types.none,
-    next = null,
-    prev = null,
-    above = null,
-    below = null
-  ) {
-    this.type = type;
-    this.next = next;
-    this.prev = prev;
-    this.above = above;
-    this.below = below;
-  }
-}
-
-class KnitPattern {
-  constructor(head = null) {
-    this.head = head;
-  }
-}
+import { KnitPattern, types, Stitch } from '@/_lib/pattern';
 
 // state is the typed pattern
 export default function RendererContainer() {
   // UI state variable
   // the pattern is an object of Pattern class
-  const [pattern, setPattern] = useState([]);
+  const [pattern, setPattern] = useState(new KnitPattern());
+
 
   function handleNewPatternText(text) {
-    console.log(text)
+    console.log(text);
+    pattern.parseTextPattern(text);
+    const updatedPattern = pattern.clone();
+    setPattern(updatedPattern);
   }
 
   return (
@@ -73,6 +50,6 @@ function PatternEditor({ handleSubmit }) {
 
 // a box which takes the pattern object from state (parsed and cleaned pattern)
 // and turns it into a series of images.
-function Rendering() {
-  return <div>Rendering</div>
+function Rendering({ pattern }) {
+  return <div>{pattern.render()}</div>
 }
