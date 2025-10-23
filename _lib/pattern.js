@@ -1,6 +1,6 @@
 import React from 'react';
 
-const newLineChar = ';';
+const NEWLINE = ';';
 
 export const types = Object.freeze({
     knit: 'k',
@@ -39,22 +39,21 @@ export class Stitch extends React.Component {
 // and given that information refer to a unique image for 
 // those stitches
 export class KnitPattern extends React.Component {
-    pattern = [[]]
+    pattern = [[]];
 
     constructor() {
         super();
     }
 
     //deep copy of pattern
-    clone() {
-        let patternClone = structuredClone(this.pattern)
-        let duplicateKnitPattern = new KnitPattern()
-        duplicateKnitPattern.setPattern(patternClone)
+    mkShalCopy() {
+        let duplicateKnitPattern = new KnitPattern();
+        duplicateKnitPattern.assignPattern(this.pattern);
         return duplicateKnitPattern;
     }
 
     // mainly for debug and testing purposes.
-    setPattern(pat) {
+    assignPattern(pat) {
         this.pattern = pat;
     }
 
@@ -79,6 +78,10 @@ export class KnitPattern extends React.Component {
                 return arr[index + 1]
             }
         }
+
+        // wipe the current pattern clean
+        this.pattern = [[]];
+
         // read through text char by char.
         let typesVals = Object.values(types);
         for (let i = 0; i < text.length; i++) {
@@ -100,12 +103,9 @@ export class KnitPattern extends React.Component {
                         i++;
                     }
                 }
-
-                // if a semicolon
-                if (char === newLineChar) {
-                    //add a new empty row.
-                    this.addRow();
-                }
+            } else if (char === NEWLINE) {
+                //add a new empty row.
+                this.addRow();
             }
             // else ignore char.
         }

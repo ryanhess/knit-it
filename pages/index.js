@@ -11,8 +11,9 @@ export default function RendererContainer() {
   function handleNewPatternText(text) {
     console.log(text);
     pattern.parseTextPattern(text);
-    const updatedPattern = pattern.clone();
+    const updatedPattern = pattern.mkShalCopy();
     setPattern(updatedPattern);
+    pattern;
   }
 
   return (
